@@ -5,12 +5,15 @@
 package com.example.steps;
 
 import java.io.FileWriter;
+import java.io.IOException;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.utils.drivers.Browser;
 import com.utils.drivers.WebDriverUtility;
+import com.utils.json.AddToJson;
 import com.utils.pages.IndexPage;
 import com.utils.pages.IssuesPage;
 
@@ -27,18 +30,19 @@ public class GatherIssueInformationSteps {
 	private WebDriver driver;
 	private String repositoryUrlValue;
 	private String numberOfReleasesText;
+	private AddToJson addToJson;
 
 	@Before
-	public void Hooks() {
+	public void Hooks() throws IOException {
 
 		/* Browser is read from Maven parameter */
 		String browserMaven = System.getProperty("browser");
 		// driver = WebDriverUtility.getWebDriver(Browser.valueOf(browserMaven));
-
 		driver = WebDriverUtility.getWebDriver(Browser.CHROME);
 		wait = new WebDriverWait(driver, 30);
-
+	
 	}
+
 
 	// Navigate to the provided URL
 	@Given("the user is on the SeleniumHQ repository page")
@@ -61,7 +65,7 @@ public class GatherIssueInformationSteps {
 	public void theRepositoryCloneURLIsObtained() {
 		IndexPage indexPage = new IndexPage(driver);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(indexPage.cloneURLField()));
-		repositoryUrlValue = indexPage.getNumberOfReleasesText();
+		repositoryUrlValue = indexPage.getCloneURL();
 	}
 
 	// Open the issues tab
@@ -110,29 +114,11 @@ public class GatherIssueInformationSteps {
 		numberOfReleasesText = indexPage.getNumberOfReleasesText();
 	}
 
-	@Then("the user retrieves {string} and add it to JSON")
-	public void retrievesValuesAndAddThemToJSON(String value) {
-		IssuesPage issuesPage = new IssuesPage(driver);
-		issuesPage.writeJSONToFile(value);
+	@Then("the {string} is added to JSON file {string}")
+	public void retrievesValuesAndAddThemToJSON(String valueToAddInJson, String file) throws IOException {
+		AddToJson addToJson = new AddToJson(driver, file);
+		addToJson.AddValuesToJson(valueToAddInJson, file);
 
-	}
-
-	// Add results to a JSON file
-	@Then("the gathered information is represented as JSON to file")
-	public void theGatheredInformationIsRepresentedAsJSON() {
-		JSONObject jsonData = new JSONObject();
-		jsonData.put("url", driver.getCurrentUrl());
-		jsonData.put("releases", numberOfReleasesText);
-
-		try {
-			FileWriter fileWriter = new FileWriter("selenium-meta-data.json");
-			fileWriter.write(jsonData.toString());
-			fileWriter.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		driver.quit();
 	}
 
 	@After

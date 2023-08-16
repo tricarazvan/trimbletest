@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="2" time="11.358">
-    <testcase classname="RepositoryInformation" name="Gather Repository Information" time="3.552">
+<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="2" time="11.166">
+    <testcase classname="RepositoryInformation" name="Gather Repository Information" time="5.022">
         <system-out>
             <![CDATA[Given the user is on the SeleniumHQ repository page.........................passed
 When the user opens the Code dialog.........................................passed
 Then the repository clone URL is obtained from the input field..............passed
 And the number of releases is obtained......................................passed
-Then the gathered information is represented as JSON to file................passed
+And the "url" is added to JSON file "selenium-meta-data.json"...............passed
+And the "releases" is added to JSON file "selenium-meta-data.json"..........passed
 ]]>
         </system-out>
     </testcase>
-    <testcase classname="RepositoryInformation" name="Retrieve Issues" time="7.425">
+    <testcase classname="RepositoryInformation" name="Retrieve Issues" time="5.504">
         <system-out>
             <![CDATA[Given the user is on the SeleniumHQ repository page.........................passed
 When user open Issues tab...................................................passed
 And the user clears the search field and enters "sort:comments-desc"........passed
 And user press the Label filter.............................................passed
 And the user filters by the label "C-java"..................................passed
-And the user clicks the Open button.........................................passed
-Then the user retrieves "Title" and add it to JSON..........................passed
-Then the user retrieves "Title" and add it to JSON..........................passed
-Then the user retrieves "Title" and add it to JSON..........................passed
-Then the user retrieves "Title" and add it to JSON..........................passed
-Then the user retrieves "Title" and add it to JSON..........................passed
+Then the user clicks the Open button........................................passed
+And the "title" is added to JSON file "most-discussed-java-issue.json"......passed
+And the "numberOfComments" is added to JSON file "most-discussed-java-issue.json".passed
 ]]>
         </system-out>
     </testcase>

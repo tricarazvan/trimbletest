@@ -73,5 +73,10 @@ public class IndexPage {
 		waitUtility.waitForVisibilityOfElement(codeDialogButton);
 		// Now the page is loaded, continue with your actions
 	}
+	
+	public String getCurentUrl() {
+	
+	return driver.getCurrentUrl();
+	}
 
 }
